@@ -1,0 +1,189 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Transcend Spatial Solutions Roadalyzer HTML5</title>
+ <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+     <script src="http://www.html5canvastutorials.com/libraries/kinetic-v3.9.6.js"></script>
+   <script type="text/javascript" src="js/jquery-ui-1.8.21.custom.min.js"></script>
+   <script type="text/javascript" src="js/getItems.js"></script>
+    <script type="text/javascript" src="js/addMapFeatures.js"></script>
+     <script type="text/javascript" src="js/writeMessages.js"></script>
+   <script type="text/javascript" src="js/scale.js"></script> 
+    <script type="text/javascript" src="js/startUp.js"></script>    
+    <script type="text/javascript" src="js/moveBar2.js"></script>
+    <script type="text/javascript" src="js/drawCanvas.js"></script>
+
+
+<link href="css/roadalyzer.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<div class="container">
+    <div id="grayCover">
+   <div id="startModal" ><form id="startForm">
+       <table class="modalTable" >
+           <tr>
+               <td colspan="3"><img src="images/routeSelHeaderOFF.png" name="routeHeader" usemap="#Map" id="routeHeader" /></td>
+           </tr>
+           <tr>
+               <td height="32" class="RS_row"><label for="routeSelect">Select Route:</label></td>
+               <td><select id="routesSelect" onchange="getMinMax()"><option id="select" selected="selected">Select a Route</option></select></td>
+               
+           </tr>
+           <tr>
+               <td class="RS_row"><label for="mileStart" id="lblMileStart">Starting Mile:</label></td>
+               <td colspan="2"><input type="text" id="mileStart" class="mileSelects" /><label id="minMiles"></label></td>
+               
+           </tr>
+           <tr>
+               <td class="RS_row" height="46"><label for="endMile" id="lblMileEnd">Ending Mile:</label></td>
+               <td colspan="2"><input type="text" id="endMile" class="mileSelects"/><label id="maxMiles"></label></td>
+               
+
+           </tr>
+           <tr>
+               <td colspan="3" height="46" class="RS_row"><label>Feature Filters:</label><br />            
+          <input type = "radio"
+                 name = "featFilter1"
+                 id = "All"
+                 value = "All" 
+                 class  = "INPfeatAll" 
+                checked ="checked"/>
+          <label for = "featFilter1" class="radioLabel">All</label>
+          
+          <input type = "radio"
+                 name = "featFilter2"
+                 id = "County_line"
+                 value = "COLN" 
+                  class  = "INPfeatOthers"/>
+          <label for = "featFilter2" class="radioLabel">County Lines</label>
+ 
+          <input type = "radio"
+                 name = "featFilter3"
+                 id = "Xchange"
+                 value = "INT"
+                 class  = "INPfeatOthers" />
+          <label for = "featFilter3" class="radioLabel">Interchanges</label>
+            <input type = "radio"
+                 name = "featFilter4"
+                 id = "RailXings"
+                 value = "RRXNG" 
+                  class  = "INPfeatOthers"/>
+          <label for = "featFilter4" class="radioLabel">Rail Crossings</label><br />
+            <input type = "radio"
+                 name = "featFilter5"
+                 id = "Radio5"
+                 value = "BRDG" 
+                 class  = "INPfeatOthers"/>
+          <label for = "featFilter5" class="radioLabel">Bridges</label>
+          
+          <input type = "radio"
+                 name = "featFilter6"
+                 id = "Radio6"
+                 value = "STRM" 
+                  class  = "INPfeatOthers"/>
+          <label for = "featFilter6" class="radioLabel">Streams</label>
+ 
+          <input type = "radio"
+                 name = "featFilter7"
+                 id = "Radio7"
+                 value = "SIGN"
+                 class  = "INPfeatOthers" />
+          <label for = "featFilter7" class="radioLabel">Signs</label>
+            <input type = "radio"
+                 name = "featFilter8"
+                 id = "Radio8"
+                 value = "CULV" 
+                  class  = "INPfeatOthers"/>
+          <label for = "featFilter8" class="radioLabel">Culverts</label>
+
+               </td>
+
+           </tr>
+           <tr>
+               <td colspan="3"  height="50" class="RS_row"> <label>Route Filters:</label><br />            
+          <input type = "radio"
+                 name = "rtFilter"
+                 id = "Radio1"
+                 value = "Interstate" />
+          <label for = "Interstate" class="radioLabel">Interstate</label>
+          
+          <input type = "radio"
+                 name = "rtFilter"
+                 id = "Radio2"
+                 value = "US" />
+          <label for = "US" class="radioLabel">US Routes</label>
+ 
+          <input type = "radio"
+                 name = "rtFilter"
+                 id = "Radio3"
+                 value = "State" />
+          <label for = "IA" class="radioLabel">State Routes</label>
+            <input type = "radio"
+                 name = "rtFilter"
+                 id = "Radio4"
+                 value = "None" />
+          <label for = "IA" class="radioLabel">None</label>
+               </td>
+           </tr>
+           <tr>
+               <td colspan="3" class="RS_row"><label for="scaleSelect">Scale:  1": </label><select id="scaleSelect">
+                 <option>100 ft</option>
+                <option>250 ft</option>
+                <option>500 ft</option>
+                <option>1000 ft</option>
+               <option>2000 ft</option>
+               <option>1 mi</option>
+               <option>2 mi</option>
+               <option>5 mi</option>
+               <option>10 mi</option>
+            </select>
+               </td>
+           </tr>
+           <tr>
+               <td colspan="3" height="40" style="text-align: center">
+                <input type="submit" value="Start Button"/>
+               </td>
+           </tr>
+
+      </table></form></div></div>
+  <div class="header"> <ul id="menu"><li><a href="#">File</a></li><li>Edit</li><li>View</li><li>Tools</li><li>Settings</li></ul>
+      <div id="scaleDiv"><label for="changeScale">Scale:  1"= </label><select id="changeScale">
+                 <option>100 ft</option>
+                <option>250 ft</option>
+                <option>500 ft</option>
+                <option>1000 ft</option>
+               <option>2000 ft</option>
+               <option>1 mi</option>
+               <option>2 mi</option>
+               <option>5 mi</option>
+               <option>10 mi</option>
+            </select></div>
+    <!-- end .header --></div>
+ <div class="content">
+  <div id="canvas1Div"><div id="canvas1"></div> </div>
+    <div id="canvasSeperator"></div>
+    <div id="canvas2Div"><div id="canvas2"></div> </div>
+   <script type="text/javascript" src="js/synchdivscroll.js"></script>
+   
+    
+
+    <!-- end .content --></div>
+  <div id="footer">
+    <p>Footer</p>
+    <!-- end .footer --></div>
+  <!-- end .container --></div>
+  
+
+<map name="Map" id="Map">
+  <area shape="rect" coords="319,4,345,27" href="#">
+</map>
+   <script type='text/javascript'>
+
+         new SynchDivScroll('canvas1Div', 'canvas2Div');
+
+  </script>
+</body>
+</html>

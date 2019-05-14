@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+ <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://www.html5canvastutorials.com/libraries/kinetic-v3.9.7.js"></script>
+    <script type="text/javascript" src="js/getCulverts.js"></script>
+    <script type="text/javascript" src="js/addMapFeatures.js"></script>
+     <script type="text/javascript" src="js/writeMessages.js"></script>
+    <script type="text/javascript" src="js/moveBar2.js"></script>
+<script>
+//window.addEventListener('resize',resize,false);
+ window.onload =  function() {
+		  var windowWidth = 2000;
+		  
+        var stage = new Kinetic.Stage({
+          container: "canvas1",
+		  
+          width: windowWidth,
+          height: 300
+        });
+		   var stage2 = new Kinetic.Stage({
+          container: "canvas2",		  
+          width: windowWidth,
+          height: 800
+        });
+		var dragBarLayer = new Kinetic.Layer(); 
+		var dragBarLayer2 = new Kinetic.Layer(); 
+		var culvertLayer = new Kinetic.Layer();
+		var streetLayer = new Kinetic.Layer();
+        var boxLayer = new Kinetic.Layer();
+        var messageLayer = new Kinetic.Layer();
+        var rectX = stage.getWidth() / 2 - 50;
+        var rectY = stage.getHeight() / 2 - 25;
+
+         var street = new Kinetic.Rect({
+          x: 0,
+          y: 90,
+          width: windowWidth,
+          height: 30,
+          fill: "#999",
+          
+          draggable: false
+        });
+		var box = new Kinetic.Rect({
+          x: 100,
+          y: rectY,
+          width: 100,
+          height: 50,
+          fill: "#00D2FF",
+          stroke: "black",
+          strokeWidth: 4,
+          draggable: true
+        });
+		//
+		
+			var dragBox = new Kinetic.Rect({
+			              x: 0,
+                          y: 0,
+                          width: 25,
+                          height: 300,
+                          fill: "yellow",
+                          alpha: .5,
+                          strokeWidth: 0,
+		                  dragConstraint: "horizontal",
+                          draggable: true
+			});
+			dragBox.on("dragmove", function () {
+			    // alert("dragstart");
+			   // writeMessage(messageLayer, "dragstart", this.attrs.x, this.attrs.y);
+			    moveBox2(dragBarLayer2, this.attrs.x);
+			});
+					dragBox.on("mousedown", function() {
+			                       var x = stage.getMousePosition();
+								   //do{
+			                       writeMessage(messageLayer, x.x);
+			                      //dragBox2.y=dragBox.y;
+			                       stage2.draw();
+								  // }
+								// while (x.x<100);
+		                       });
+		dragBox.on("mouseup", function() {
+			writeMessage(messageLayer, "");
+			//dragBox2.y=dragBox.y;
+			stage2.draw();
+		});
+				dragBarLayer.add(dragBox);
+		//
+		
+		var dragBox2 = new Kinetic.Rect({
+			x: 0,
+          y: 0,
+          width: 25,
+          height: 300,
+          fill: "yellow",
+          alpha: .5,
+          strokeWidth: 0,
+		  dragConstraint: "horizontal",
+          draggable: true
+		});
+
+        // write out drag and drop events
+		box.on("dragmove", function () {
+		   // alert("dragstart");
+		    writeMessage(messageLayer, "dragstart", this.attrs.x, this.attrs.y);
+		    moveBox2(dragBarLayer2,this.attrs.x);
+        });
+        box.on("dragend", function() {
+          writeMessage(messageLayer, "dragend");
+        });
+		
+        
+        boxLayer.add(box);
+		streetLayer.add(street);
+		addCulverts(stage,culvertLayer,messageLayer);
+		addStripes(stage,streetLayer,street,0,40);
+		
+		dragBarLayer2.add(dragBox2);
+		
+        stage.add(streetLayer);
+		stage.add(culvertLayer);
+		stage.add(dragBarLayer);
+		stage2.add(dragBarLayer2);
+		
+        stage.add(messageLayer);
+        stage.add(boxLayer);
+		stage.draw();
+		//window.addEventListener("resize", function() {
+			//resizeStage(stage,streetLayer,street);          
+       // }, false);
+	
+
+      };
+
+
+  </script>  
+<link href="css/roadalyzer.css" rel="stylesheet" type="text/css">
+</head>
+
+<body onmousedown="return false;">
+
+<div class="container">
+  <div class="header"> <ul id="menu"><li>File</li><li>Edit</li><li>View</li><li>Tools</li><li>Settings</li></ul>
+    <!-- end .header --></div>
+  <div class="content">
+    <div id="canvas1Div" style="height:300px"><div id="canvas1" style="height:300px;display:block"></div> </div>
+    <div id="canvasSeperator"></div>
+    <div id="canvas2Div"><div id="canvas2"></div> </div>
+    <script type="text/javascript" src="js/synchdivscroll.js"></script> 
+
+    <!-- end .content --></div>
+  <div id="footer">
+    <p>Footer</p>
+    <!-- end .footer --></div>
+  <!-- end .container --></div>
+  <script type='text/javascript'>
+
+   new SynchDivScroll('canvas1Div', 'canvas2Div');
+
+  </script>
+</body>
+</html>

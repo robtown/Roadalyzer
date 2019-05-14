@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html >
+<html>
+<head>
+    <title>Dynamic Script Tag Example</title>
+<script type="text/javascript" src="js/ajax2.js"></script>
+    <script id="test" src="http://ec2-23-20-37-199.compute-1.amazonaws.com/IowaMavricService/IowaMavricService.svc/XingFeatures/CULV/I%2029%20N/0/151.8"></script>
+<script type="text/javascript">
+    alert(test.text);
+
+</script>
+</head>
+<body>
+Find Images:
+<input id="userinput" type="text" />
+<input type="button" onclick="dynamicTag();" value="Search" />
+<br />
+<div id="PlaceImages"></div>
+</body>
+
+</html>

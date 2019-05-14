@@ -1,0 +1,164 @@
+﻿@charset "utf-8";
+html body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	background-color: #69F;
+}
+#startModal {
+	width: 360px;
+	height: 360px;
+	margin-top: 120px;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+	background-image: url(../images/SmallModalBG.png);
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	padding-top: 0;
+	padding-right: 0;
+	padding-bottom: 0;
+	padding-left: 0;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+
+    
+}
+#wrapper {
+	width: 960px;
+	margin-top: 60px;
+}
+#canvas1Div {
+	height: 232px;
+	width: 960px;
+	overflow:auto;
+	border: 0px solid;
+    background-color:#fff;
+    padding-bottom:0px;
+    margin-bottom:0px;
+    
+        
+}
+#canvas2Div {
+	height: 300px;
+	width: 960px;
+	overflow: auto;
+}
+#canvas1 {
+	background-image: url(../images/canvas2BG.jpg);
+    /*background-color:#000;*/
+	background-repeat: repeat-x;
+	background-position: left;
+	background-position-y: top;
+	padding: 0px;
+	margin: 0px;
+	/*width: 2000px;*/
+    height:210px;
+	display: none;
+}
+#canvas2 {
+	background-image: url(../images/canvas1BG.jpg);
+	background-repeat: repeat-x;
+	background-position: left;
+    background-position-y: top;
+	padding: 0px;
+	margin: 0px;
+	width: 2000px;
+}
+.container {
+	height: auto;
+	width: 960px;
+	overflow: hidden;
+	margin-right: auto;
+	margin-left: auto;
+	background-color: #FFF;
+	padding: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+.container .header {
+	background-color: #CCC;
+	height: 30px;
+	width: 960px;
+	margin: 0px;
+	padding: 0px;
+}
+.container .header #menu {
+	display: block;
+	margin-top: auto;
+	margin-bottom: auto;
+	margin-left: 12px;
+	padding-top: 6px;
+	padding-right: 4px;
+	padding-bottom: 4px;
+	padding-left: 4px;
+}
+.container .header #menu li {
+	display: inline;
+	padding-left: 20px;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #FFF;
+	font-weight: bold;
+	font-size: 16px;
+	padding-top: 4px;
+	margin-top: 4px;
+}
+.container .content #canvasSeperator {
+	background-color: #999;
+	margin: 0px;
+	padding: 0px;
+	height: 25px;
+	width: 960px;
+}
+.container .content {
+	height: auto;
+	width: 960px;
+}
+.container #footer {
+	background-color: #CCC;
+	margin: 0px;
+	padding: 0px;
+	height: 20px;
+	width: 960px;
+}
+
+#grayCover {
+    width:960px;
+    height:100%;
+    background-image:url(../images/GrayBoxBG.png);
+    position:absolute;
+    z-index:1;
+    display:block;
+    
+}
+.radioLabel {
+    font-family:Arial,Verdana;
+    font-size:9pt;
+}
+.mileSelects {
+    width:30px;
+}
+.container #grayCover #startModal #startForm table tr .RS_row {
+	padding-left: 10px;    
+}
+#modalTable {
+    width:360px;
+    padding:0 0 0 0;
+}
+.container #grayCover #startModal #startForm .modalTable tr td #routeHeader {
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+}

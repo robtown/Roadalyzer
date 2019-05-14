@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> Canvas test </title>
+
+<script>
+	
+	var $ = function(id) { return document.getElementById(id); }
+		
+	</script>
+	
+	<style type="text/css">
+	#e {
+	background-color: #0F0;
+}
+    </style>
+</head>
+	<body>
+	<canvas id="e" height="500" width="500"></canvas>
+	
+<script>
+  var canvas = document.getElementById("e");
+  var context = canvas.getContext("2d");
+  var face = new Image();
+  face.src = "http://showellblades.com/wp-content/uploads/2006/10/smiley_face.jpg";
+	
+  face.onload = function() {
+    context.drawImage(face, 0, 0);
+  };
+
+  canvas.addEventListener("click", onCanvasClick, false);
+  
+  function onCanvasClick(e) {
+  	alert(getCursorPosition(e));
+  }
+  
+  function getCursorPosition(e) {
+  	var x;
+    var y;
+    if (e.pageX != undefined && e.pageY != undefined) {
+	x = e.pageX;
+	y = e.pageY;
+    }
+    else {
+	x = e.clientX + document.body.scrollLeft +
+            document.documentElement.scrollLeft;
+	y = e.clientY + document.body.scrollTop +
+            document.documentElement.scrollTop;
+    }
+    x -= canvas.offsetLeft;
+    y -= canvas.offsetTop;
+    
+    return [x,y];
+  }
+
+</script>
+	</body>
+</html>

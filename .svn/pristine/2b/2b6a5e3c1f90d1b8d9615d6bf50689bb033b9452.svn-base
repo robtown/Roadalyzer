@@ -1,0 +1,244 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Transcend Spatial Solutions Roadalyzer HTML5</title>
+    <LINK REL="SHORTCUT ICON" HREF="favicon.ico" type="image/x-icon"> 
+ <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://tab-slide-out.googlecode.com/files/jquery.tabSlideOut.v1.3.js"></script>
+     <!--<script src="http://www.html5canvastutorials.com/libraries/kinetic-v3.9.8.js"></script>-->
+    <script type="text/javascript" src="js/kinetic-v3.9.8.js"></script>
+    <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=3.0"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.8.21.custom.min.js"></script>
+    <script type="text/javascript" src="js/jquery.jqEasyPanel.js"></script>
+    <script type="text/javascript" src="js/jquery.horizontalnav.js"></script>
+    <script type="text/javascript" src="js/jquery.hoverIntent.js"></script>
+     <script type="text/javascript" src="js/ESRImap.js"></script>
+   <script type="text/javascript" src="js/getItems.js"></script>
+    <script type="text/javascript" src="js/panels.js"></script>
+    <script type="text/javascript" src="js/addMapFeatures.js"></script>
+     <script type="text/javascript" src="js/writeMessages.js"></script>
+   <script type="text/javascript" src="js/scale.js"></script> 
+    <script type="text/javascript" src="js/startUp.js"></script>    
+    <script type="text/javascript" src="js/moveBar2.js"></script>
+    <script type="text/javascript" src="js/drawCanvas.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#jqeasypanel').jqEasyPanel();
+        });
+</script>
+
+  <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.0/js/dojo/dijit/themes/claro/claro.css">
+<link href="css/roadalyzer.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div id="jqeasypanel">
+    <ul class="panelbuttons">
+    	<li><a href="#"><img src="images/icons/pencil_48.png" alt="" />Item One</a></li>
+        <li><a href="#"><img src="images/icons/clipboard_48.png" alt="" />Item Two</a></li>
+        <li><a href="#"><img src="images/icons/letter_48.png" alt="" />Item Three</a></li>
+        <li><a href="#"><img src="images/icons/diagram_48.png" alt="" />Item Four</a></li>
+        <li><a href="#"><img src="images/icons/gear_48.png" alt="" />Item Five</a></li>
+        <li><a href="#"><img src="images/icons/save_48.png" alt="" />Item Six</a></li>
+    </ul>
+    <div id="copy">
+    	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean varius odio ac nibh fringilla cursus. Fusce euismod commodo ipsum eget vehicula. Cras et mauris in enim porta fermentum. Morbi cursus orci in turpis fringilla feugiat. Vestibulum ut libero non libero pretium ornare eget nec ante.</p>	
+  </div>
+    <div id="jqeasypaneloptions">
+    	<p><label for="keepopen">Keep panel open?</label> <input name="keepopen" id="keepopen" type="checkbox" value="" /></p>
+</div>
+</div>
+<div id="jqeasytrigger">
+    <a href="#" class="open">Open Tools</a>
+    <a href="#" class="close">Close Tools</a>
+</div>
+<div id="container" class="container">
+     <div id="mapModal" class="claro">
+
+
+    <button onclick="closeMap()">CloseMap</button>
+
+    
+    <div id="map" style="width:1020px; height:260px; border:2px solid #000;" class="claro"></div>
+
+    <!--<br />
+    Zoom Slider :
+    <input type="button" value="Hide" onclick="map.hideZoomSlider()" />
+    <input type="button" value="Show" onclick="map.showZoomSlider()" />-->
+
+    </div>
+    <div id="grayCover">
+   <div id="startModal" ><form id="startForm">
+       <table class="modalTable" >
+           <tr>
+               <td colspan="3"><img src="images/routeSelHeaderOFF.png" name="routeHeader" usemap="#linkMap" id="routeHeader" /></td>
+           </tr>
+           <tr>
+               <td height="32" class="RS_row"><label for="routeSelect">Select Route:</label></td>
+               <td><select id="routesSelect" onchange="getMinMax()"><option id="select" selected="selected">Select a Route</option></select></td>
+               
+           </tr>
+           <tr>
+               <td class="RS_row"><label for="mileStart" id="lblMileStart">Starting Mile:</label></td>
+               <td colspan="2"><input type="text" id="mileStart" class="mileSelects" /><label id="minMiles"></label></td>
+               
+           </tr>
+           <tr>
+               <td class="RS_row" height="46"><label for="endMile" id="lblMileEnd">Ending Mile:</label></td>
+               <td colspan="2"><input type="text" id="endMile" class="mileSelects"/><label id="maxMiles"></label></td>
+               
+
+           </tr>
+           <tr>
+               <td colspan="3" height="46" class="RS_row"><label>Feature Filters:</label><br />            
+          <input type = "radio"
+                 name = "featFilter1"
+                 id = "All"
+                 value = "All" 
+                 class  = "INPfeatAll" 
+                checked ="checked"/>
+          <label for = "featFilter1" class="radioLabel">All</label>
+          
+          <input type = "radio"
+                 name = "featFilter2"
+                 id = "County_line"
+                 value = "COLN" 
+                  class  = "INPfeatOthers"/>
+          <label for = "featFilter2" class="radioLabel">County Lines</label>
+ 
+          <input type = "radio"
+                 name = "featFilter3"
+                 id = "Xchange"
+                 value = "INT"
+                 class  = "INPfeatOthers" />
+          <label for = "featFilter3" class="radioLabel">Interchanges</label>
+            <input type = "radio"
+                 name = "featFilter4"
+                 id = "RailXings"
+                 value = "RRXNG" 
+                  class  = "INPfeatOthers"/>
+          <label for = "featFilter4" class="radioLabel">Rail Crossings</label><br />
+            <input type = "radio"
+                 name = "featFilter5"
+                 id = "Radio5"
+                 value = "BRDG" 
+                 class  = "INPfeatOthers"/>
+          <label for = "featFilter5" class="radioLabel">Bridges</label>
+          
+          <input type = "radio"
+                 name = "featFilter6"
+                 id = "Radio6"
+                 value = "STRM" 
+                  class  = "INPfeatOthers"/>
+          <label for = "featFilter6" class="radioLabel">Streams</label>
+ 
+          <input type = "radio"
+                 name = "featFilter7"
+                 id = "Radio7"
+                 value = "SIGN"
+                 class  = "INPfeatOthers" />
+          <label for = "featFilter7" class="radioLabel">Signs</label>
+            <input type = "radio"
+                 name = "featFilter8"
+                 id = "Radio8"
+                 value = "CULV" 
+                  class  = "INPfeatOthers"/>
+          <label for = "featFilter8" class="radioLabel">Culverts</label>
+
+               </td>
+
+           </tr>
+           <tr>
+               <td colspan="3"  height="50" class="RS_row"> <label>Route Filters:</label><br />            
+          <input type = "radio"
+                 name = "rtFilter"
+                 id = "Radio1"
+                 value = "Interstate" />
+          <label for = "Interstate" class="radioLabel">Interstate</label>
+          
+          <input type = "radio"
+                 name = "rtFilter"
+                 id = "Radio2"
+                 value = "US" />
+          <label for = "US" class="radioLabel">US Routes</label>
+ 
+          <input type = "radio"
+                 name = "rtFilter"
+                 id = "Radio3"
+                 value = "State" />
+          <label for = "IA" class="radioLabel">State Routes</label>
+            <input type = "radio"
+                 name = "rtFilter"
+                 id = "Radio4"
+                 value = "None" />
+          <label for = "IA" class="radioLabel">None</label>
+               </td>
+           </tr>
+           <tr>
+               <td colspan="3" class="RS_row"><label for="scaleSelect">Scale:  1": </label><select id="scaleSelect">
+                 <option>100 ft</option>
+                <option>250 ft</option>
+                <option>500 ft</option>
+                <option>1000 ft</option>
+               <option>2000 ft</option>
+               <option>1 mi</option>
+               <option>2 mi</option>
+               <option>5 mi</option>
+               <option>10 mi</option>
+            </select>
+               </td>
+           </tr>
+           <tr>
+               <td colspan="3" height="40" style="text-align: center">
+                <input type="submit" value="Start Button"/>
+               </td>
+           </tr>
+
+      </table></form></div>
+   
+    
+    </div>
+  
+ <div class="content">
+     <div class="header">
+      <div class="headerLogoImage"><img src="images/RALogo1d.png" /></div><div class="headerHide"><table border="0"><tr><td class="headerText">Route:</td><td class="routeShield"><label id="routeNo"></label></td><td class="headerText">Begin Mile:</td><td><div class="mileageBG"><label id="begMile"></label></div></td><td class="headerText">End Mile:</td><td><div class="mileageBG"><label id="eMile"></label></div></td><td class="headerText">Guide Mile:</td><td><div class="mileageBG"><label id="bar1"></label></div></td><td>
+         <div id="scaleDiv"> <label for="changeScale">Scale:  1"= </label><select id="changeScale">
+                 <option>100 ft</option>
+                <option>250 ft</option>
+                <option>500 ft</option>
+                <option>1000 ft</option>
+               <option>2000 ft</option>
+               <option>1 mi</option>
+               <option>2 mi</option>
+               <option>5 mi</option>
+               <option>10 mi</option>
+            </select></div></td><td class="headerLink"><span id="mapView"><a href="#">View On Map</a></span></td></tr></table></div>
+          
+        
+  </div>
+  <div id="canvas1Div"><div id="canvas1"></div> </div>
+    <div id="canvasSeperator"><ul id="panelLinks"></ul></div>
+    <div id="canvas2Div"><div id="canvas2"></div> </div>
+   <script type="text/javascript" src="js/synchdivscroll.js"></script>
+   
+    
+
+    <!-- end .content --></div>
+  <div id="footer">
+    <p>Footer</p>
+    <!-- end .footer --></div>
+    
+  <!-- end .container --></div>
+ 
+
+<map name="linkMap" id="linkMap">
+  <area shape="rect" coords="319,4,345,27" href="#">
+</map>
+   <script type='text/javascript'>
+
+         new SynchDivScroll('canvas1Div', 'canvas2Div');
+
+  </script>
+</body>
+</html>

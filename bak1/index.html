@@ -1,0 +1,119 @@
+<!Doctype HTML>
+
+<HTML>
+
+<Head>
+<Title> Roadalyzer HTML5</Title>
+ <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/kinetic-v3.9.7.min.js"></script>
+
+
+<script>
+window.addEventListener('resize',resize,false);
+function draw(){
+	
+	// ToDo we'll need to determine scale to properly set the stripes sizes and icon sizes... 
+	
+	
+	//Getting our canvas to start it all.
+	var el2 = document.getElementById("canvas");
+	if(el2.getContext){
+	// Lets find out how wide our canvas is:
+	var canWide = el2.width;
+	
+	// Figure out how many yello stripes can fit.
+	var totalStripes = canWide/110; 
+	//alert(totalStripes);
+	
+    window.ctx = el2.getContext("2d");
+	ctx.fillStyle   = '#999'; // blue
+	ctx.fillRect  (0,100, canWide, 240);
+	//Draw shapes
+    ctx.fillStyle   = 'yellow'; // blue
+	var stripeX = 0;
+	for(i=0;i<totalStripes;i++)
+	{
+		ctx.fillRect  (stripeX,212, 80, 12);
+		stripeX += 110;
+	}	
+	
+	// Draw shapes
+    var img = new Image();
+    img.src = 'png/culvert.png';
+
+    img.onload = function(){
+		$.ajax({
+        type: "GET",
+	     url: "xml/culverts.xml",
+	     dataType: "xml",
+	     success: function(xml) {
+			 //alert("loaded");
+			 $(xml).children().each(function(){
+				 if(this.tagName == "culverts"){
+					 $(this).find('culvert').each(function(){
+                    
+					if($(this).attr('orient')== "v"){
+						//alert($(this).attr('orient'));
+						 ctx.save();
+						 ctx.translate($(this).attr('x'),$(this).attr('y'));
+						 
+						var rotate = 90;
+						 ctx.rotate(rotate * Math.PI / 180);
+						 //ctx.drawImage(img,$(this).attr('x'),$(this).attr('y'));
+						 ctx.drawImage(img,-$(this).attr('x'),-$(this).attr('y'));
+						 ctx.restore();     
+					}else{
+						ctx.drawImage(img,$(this).attr('x'),$(this).attr('y'));
+					}
+					
+					 });
+				 }
+                });
+			
+			 
+               
+	        }
+         });
+       
+       
+        }
+	
+	}
+ 	
+}
+
+
+function resize(){
+     var el2 = document.getElementById("canvas");
+    //window.ctx2 = el.getContext("2d");
+    if (el2.getContext){  
+    var ctx = canvas.getContext('2d'); 
+	if(window.innerWidth > 960){    
+	 ctx.canvas.width  = window.innerWidth;
+	}else{
+		ctx.canvas.width  = 960;
+	}
+     ctx.canvas.height = 500;
+	}
+	draw();
+//alert("wid");
+} 
+  </script>  
+<link href="css/roadalyzer.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+
+</style>
+<meta charset="utf-8">
+</Head>
+
+<Body onload="resize()";>
+
+<div id="wrapper">
+  <a href="kinectTest.html">testLink1</a>
+  <canvas id="canvas"></canvas>  
+
+</div>
+
+</Body>
+
+</HTML>

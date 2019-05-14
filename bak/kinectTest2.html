@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+      canvas {
+        border: 1px solid #9C9898;
+      }
+    </style>
+     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://www.html5canvastutorials.com/libraries/kinetic-v3.9.7.js"></script>
+    <script type="text/javascript" src="js/getCulverts.js"></script>
+    <script type="text/javascript" src="js/addMapFeatures.js"></script>
+     <script type="text/javascript" src="js/writeMessages.js"></script>
+    <script>
+	//window.addEventListener('resize',resize,false);
+	
+	  
+
+	  
+
+
+      window.onload =  function() {
+		  var windowWidth = 960;
+		  if(window.innerWidth > 960){
+			  windowWidth = window.innerWidth;
+		  }
+        var stage = new Kinetic.Stage({
+          container: "container",
+          width: windowWidth,
+          height: 500
+        });
+		var culvertLayer = new Kinetic.Layer();
+		var streetLayer = new Kinetic.Layer({
+		    draggable: true,
+            throttle: 50
+
+		});
+        var boxLayer = new Kinetic.Layer();
+        var messageLayer = new Kinetic.Layer();
+        var rectX = stage.getWidth() / 2 - 50;
+        var rectY = stage.getHeight() / 2 - 25;
+
+         var street = new Kinetic.Rect({
+          x: 0,
+          y: 100,
+          width: 1200000,
+          height: 240,
+          fill: "#999",
+          
+          draggable: false
+        });
+		var box = new Kinetic.Rect({
+          x: rectX,
+          y: rectY,
+          width: 100,
+          height: 50,
+          fill: "#00D2FF",
+          stroke: "black",
+          strokeWidth: 4,
+          draggable: false
+        });
+
+        // write out drag and drop events
+       box.on("dragstart", function() {
+          writeMessage(messageLayer, "dragstart");
+        });
+        box.on("dragend", function() {
+          writeMessage(messageLayer, "dragend");
+        });
+        
+        boxLayer.add(box);
+		streetLayer.add(street);
+		//addCulverts(stage,culvertLayer,messageLayer);
+		addStripes(stage,streetLayer,street,0,110);
+		
+        stage.add(streetLayer);
+		stage.add(culvertLayer);
+		
+        stage.add(messageLayer);
+        stage.add(boxLayer);
+		stage.draw();
+		window.addEventListener("resize", function() {
+			resizeStage(stage,streetLayer,street);          
+        }, false);
+      };
+
+    </script>
+  </head>
+  <body onmousedown="return false;">
+    <div id="container"></div>
+  </body>
+</html>

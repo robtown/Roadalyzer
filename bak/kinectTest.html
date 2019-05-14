@@ -1,0 +1,110 @@
+﻿<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+      canvas {
+        border: 1px solid #9C9898;
+      }
+    </style>
+     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+   
+      <script type="text/javascript" src="js/kinetic-v3.9.8.js"></script>
+    <script>
+        var offsets;
+      function writeMessage(messageLayer, message, xLoc) {
+        var context = messageLayer.getContext();
+        messageLayer.clear();
+        context.font = "18pt Calibri";
+        context.fillStyle = "black";
+        context.fillText(message, xLoc, 25);
+      }
+	  function addStripes(stage,streetLayer,street) {
+		  var ctx = streetLayer.getContext();
+		  var numStripes = street.getWidth()/110;
+		  streetLayer.clear();
+		  //alert(street.getWidth()/180);
+		  var stripeX = 0;
+	      for(i=0;i<numStripes;i++)
+	      {
+		    ctx.fillRect  (stripeX,212, 80, 12);
+		  var stripe = new Kinetic.Rect({
+          x: stripeX,
+          y: 212,
+          width: 80,
+          height: 12,
+          fill: "yellow",          
+          draggable: false
+        });
+		    stripeX += 110;
+			streetLayer.add(stripe);
+	      }	
+	  }
+
+	  $(document).ready(function () {
+        var stage = new Kinetic.Stage({
+          container: "container",
+          width: 8000,
+          height: 500
+        });
+		var streetLayer = new Kinetic.Layer();
+        var boxLayer = new Kinetic.Layer();
+        var messageLayer = new Kinetic.Layer();
+         var street = new Kinetic.Rect({
+          x: 0,
+          y: 100,
+          width: 8000,
+          height: 240,
+          fill: "#999",
+          draggable: false
+         });
+         var HUDtest = new Kinetic.Rect({
+             x: 0,
+             y: 80,
+             width: 600,
+             height: 50,
+             fill: "#00D2FF",
+             stroke: "black",
+             strokeWidth: 4,
+             draggable: true
+         });
+        boxLayer.add(HUDtest);
+		streetLayer.add(street);
+		addStripes(stage,streetLayer,street);
+        stage.add(streetLayer);
+        stage.add(messageLayer);
+        stage.add(boxLayer);
+		stage.draw();
+		window.addEventListener("resize", function() {
+			resizeStage(stage,streetLayer,street);          
+        }, false);
+		//offsets = stage._getContainerPosition();
+		$(function () {
+		    var oldHUDpos = HUDtest.attrs.x;
+		    var position1 = $("#container").offset();
+		    $("#testText").text("Blue Box location: " + HUDtest.attrs.x);
+		    $("#testText2").text("Container DIV: " + position1.left);
+
+		    $('#wrapper').scroll(function () {
+		        var position = $("#container").offset();
+		        var HUDpos = Math.abs(position1.left - position.left) + oldHUDpos;
+		        HUDtest.setX(HUDpos);
+		        stage.draw();
+		        $("#testText").text("Blue Box location: " + HUDtest.attrs.x);
+		        $("#testText2").text("Container DIV: " + position.left);
+		        writeMessage(messageLayer,"Blue Box location: " + HUDtest.attrs.x, HUDpos + 50)
+		    });
+		})
+
+      });
+    </script>
+  </head>
+  <body onmousedown="return false;">
+      <div id="wrapper" style='overflow:auto;height:300px;width:800px;margin-left:auto;margin-right:auto'>
+    <div id="container" ></div></div>
+      <label id="testText"></label><br /><label id="testText2"></label>
+  </body>
+</html>

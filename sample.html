@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+ <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://www.html5canvastutorials.com/libraries/kinetic-v3.9.7.js"></script>
+    <script type="text/javascript" src="js/getCulverts.js"></script>
+    <script type="text/javascript" src="js/addMapFeatures.js"></script>
+     <script type="text/javascript" src="js/writeMessages.js"></script>
+
+<script>
+window.addEventListener('resize',resize,false);
+function draw(){
+	
+	// ToDo we'll need to determine scale to properly set the stripes sizes and icon sizes... 
+	
+	
+	//Getting our canvas to start it all.
+	var el1 = document.getElementById("canvas1");
+	var el2 = document.getElementById("canvas2");
+	if(el2.getContext){
+		//alert("got context");
+	// Lets find out how wide our canvas is:
+	//Note - We'll have to add code to figure out scale and size on the fly.
+	//var canWide = el1.width;
+	var canWide = 2000;
+	
+	// Figure out how many yello stripes can fit.
+	var totalStripes = canWide/35; 
+	//alert(totalStripes);
+	
+    window.ctx = el1.getContext("2d");
+	ctx.fillStyle   = '#999'; // blue
+	ctx.fillRect  (0,90, canWide, 30);
+	//Draw shapes
+    ctx.fillStyle   = 'yellow'; // blue
+	var stripeX = 0;
+	for(i=0;i<totalStripes;i++)
+	{
+		ctx.fillRect  (stripeX,104, 20, 2);
+		stripeX += 35;
+	}	
+	
+	// Draw shapes
+    var culvert1 = new Image();
+	var culvert2 = new Image();
+    culvert1.src = 'symbols/culvert.png';
+    culvert2.src = 'symbols/culvertV.png';
+    culvert2.onload = function(){
+		$.ajax({
+        type: "GET",
+	     url: "xml/culverts.xml",
+	     dataType: "xml",
+	     success: function(xml) {
+			 //alert("loaded");
+			 $(xml).children().each(function(){
+				 if(this.tagName == "culverts"){
+					 $(this).find('culvert').each(function(){
+                    
+					if($(this).attr('orient')== "v"){
+						//alert($(this).attr('orient'));
+						 //ctx.save();
+						 //ctx.translate(40,12);
+						 
+						//var rotate = 90;
+						 //ctx.rotate(rotate * Math.PI / 180);
+						 //ctx.drawImage(img,$(this).attr('x'),$(this).attr('y'));
+						 ctx.drawImage(culvert2,$(this).attr('x'),$(this).attr('y'));
+						 ctx.restore();     
+					}else{
+						ctx.drawImage(culvert1,$(this).attr('x'),$(this).attr('y'));
+					}					
+					 });
+				 }
+                });
+	        }
+         });
+        }
+	}
+}
+function resize(){
+     var el2 = document.getElementById("canvas1");
+    //window.ctx2 = el.getContext("2d");
+    if (el2.getContext){  
+    var ctx = el2.getContext('2d'); 
+	if(window.innerWidth > 960){    
+	 //ctx.canvas.width  = window.innerWidth;
+	 ctx.canvas.width = 2000;
+	}else{
+		ctx.canvas.width  = 2000;
+	}
+     ctx.canvas.height = 300;
+	}
+	draw();
+//alert("wid");
+} 
+  </script>  
+<link href="css/roadalyzer.css" rel="stylesheet" type="text/css">
+</head>
+
+<body onload="resize()">
+
+<div class="container">
+  <div class="header"> <ul id="menu"><li>File</li><li>Edit</li><li>View</li><li>Tools</li><li>Settings</li></ul>
+    <!-- end .header --></div>
+  <div class="content">
+    <div id="canvas1Div"><canvas id="canvas1"></canvas>  </div>
+    <div id="canvasSeperator"></div>
+    <div id="canvas2Div"><canvas id="canvas2"></canvas> </div> 
+
+    <!-- end .content --></div>
+  <div class="footer">
+    <p>Footer</p>
+    <!-- end .footer --></div>
+  <!-- end .container --></div>
+</body>
+</html>
